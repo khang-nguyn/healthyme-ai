@@ -1,0 +1,109 @@
+.app-layout {
+  min-height: 100vh;
+  background: transparent;
+}
+
+.app-header {
+  height: auto;
+  line-height: 1.4;
+  padding: 24px;
+  background: linear-gradient(130deg, #0d5f5f 0%, #1a786a 45%, #2c9c7f 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-title {
+  color: #f5fffe !important;
+  margin: 0 !important;
+}
+
+.app-subtitle {
+  color: rgba(245, 255, 254, 0.82) !important;
+  font-size: 15px;
+}
+
+.switcher-col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.app-content {
+  padding: 28px 24px 40px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.ant-card {
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(31, 78, 86, 0.1);
+}
+
+.content-card {
+  border: 1px solid rgba(16, 90, 88, 0.08);
+}
+
+.section-title {
+  margin: 0 0 8px !important;
+  letter-spacing: -0.01em;
+}
+
+.report-title {
+  margin-bottom: 2px !important;
+}
+
+.section-subtitle {
+  color: #55737b !important;
+  font-size: 15px;
+}
+
+.report-action-col {
+  text-align: right;
+}
+
+.cta-button {
+  min-width: 170px;
+  height: 44px;
+}
+
+.ant-card-head-title {
+  font-weight: 700;
+}
+
+.ant-card-body {
+  padding: 22px !important;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 18px;
+  }
+
+  .app-content {
+    padding: 14px 12px 24px;
+  }
+
+  .switcher-col {
+    justify-content: flex-start;
+  }
+
+  .section-title {
+    font-size: 24px !important;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .report-action-col {
+    text-align: left;
+  }
+
+  .cta-button {
+    width: 100%;
+  }
+
+  .ant-card-body {
+    padding: 16px !important;
+  }
+}

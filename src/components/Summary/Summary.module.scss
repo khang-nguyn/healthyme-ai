@@ -1,0 +1,107 @@
+.card {
+  width: 100%;
+}
+
+.top_row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.patient_meta {
+  min-width: 0;
+}
+
+.meta_line {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.meta_label {
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.profile_tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.profile_tags :global(.ant-tag) {
+  border-radius: 999px;
+  background: #e9edf2;
+  border-color: transparent;
+  margin-inline-end: 0;
+  text-transform: capitalize;
+}
+
+.stats_grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stat_item {
+  min-width: 0;
+  border: 1px solid #d9e1e8;
+  border-radius: 12px;
+  padding: 14px 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.stat_item :global(.ant-statistic-title) {
+  font-weight: 600;
+  color: #192430;
+}
+
+.stat_item :global(.ant-statistic-content) {
+  font-size: 20px;
+}
+
+.bmi_card {
+  position: relative;
+}
+
+.bmi_status {
+  color: #2f9860;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.health_summary_paragraph {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d9b88f;
+  background: #fff7ed;
+  color: #2f2a26;
+  line-height: 1.6;
+}
+
+.health_summary_paragraph p {
+  margin: 4px 0 0;
+}
+
+@media (max-width: 992px) {
+  .top_row {
+    flex-direction: column;
+  }
+
+  .profile_tags {
+    justify-content: flex-start;
+  }
+
+  .stats_grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .stats_grid {
+    grid-template-columns: 1fr;
+  }
+}
