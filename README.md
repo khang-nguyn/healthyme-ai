@@ -1,6 +1,6 @@
 # HealthyMe AI - Health Care Report Dashboard
 
-Frontend app de nhap thong tin benh nhan, goi LLM API de tao health report, va hien thi ket qua bang table + charts + timeline.
+HealthyMe AI is a frontend dashboard for collecting patient input, generating an LLM-based health report, and visualizing results with tables, charts, and timeline blocks.
 
 ## 1) Tech Stack
 
@@ -8,24 +8,24 @@ Frontend app de nhap thong tin benh nhan, goi LLM API de tao health report, va h
 - Vite 8
 - Redux Toolkit + React Redux
 - Ant Design + Ant Design Charts
-- Fetch API (wrapper in src/services/api.ts)
+- Fetch API (shared wrapper in [src/services/api.ts](src/services/api.ts))
 - ESLint
 
-## 2) Yeu cau moi truong
+## 2) Requirements
 
 - Node.js >= 20
 - npm >= 10
 
-Kiem tra version:
+Check installed versions:
 
 ```bash
 node -v
 npm -v
 ```
 
-## 3) Setup env
+## 3) Environment Setup
 
-Tao file `.env` tai root project:
+Create a `.env` file in the project root:
 
 ```env
 VITE_LLM_API_URL=http://localhost:3000/api/llm
@@ -38,72 +38,69 @@ VITE_GEMINI_API_KEY=your_gemini_api_key
 VITE_GEMINI_MODEL=gemini-2.0-flash
 ```
 
-Ghi chu:
+Variable usage:
 
-- `VITE_LLM_*` dung cho service generic trong [src/services/llmService/llmService.ts](src/services/llmService/llmService.ts).
-- `VITE_OPENAI_*` dung cho [src/services/llmService/openaiService.ts](src/services/llmService/openaiService.ts), goi truc tiep OpenAI API server.
-- `VITE_GEMINI_*` dung cho [src/services/llmService/geminiService.ts](src/services/llmService/geminiService.ts), goi truc tiep Gemini API server.
+- `VITE_LLM_*`: generic LLM service in [src/services/llmService/llmService.ts](src/services/llmService/llmService.ts)
+- `VITE_OPENAI_*`: OpenAI service in [src/services/llmService/openaiService.ts](src/services/llmService/openaiService.ts)
+- `VITE_GEMINI_*`: Gemini service in [src/services/llmService/geminiService.ts](src/services/llmService/geminiService.ts)
 
-## 4) Cach chay project
+If you need an API key, contact: **khangdev2813@gmail.com**
 
-### Cai dependency
+## 4) Run the Project
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Chay local
+Start development server:
 
 ```bash
 npm run dev
 ```
 
-Mac dinh app chay o dia chi hien trong terminal (thuong la `http://localhost:5173`).
-
-### Build production
+Build for production:
 
 ```bash
 npm run build
 ```
 
-### Preview ban build
+Preview production build:
 
 ```bash
 npm run preview
 ```
 
-### Lint
+Lint:
 
 ```bash
 npm run lint
 ```
 
-## 5) Data Flow chinh
+## 5) Main Data Flow
 
-1. User submit form tai FormPage.
-2. Form dispatch thunk `generateHealthReport`.
-3. Thunk goi API qua `llmService` va parse JSON.
-4. Reducer luu vao Redux state:
-   - `loading`
-   - `reportData`
-   - `error`
-5. ReportPage lay data tu Redux, sanitize/transform va render Summary/Table/Charts/Timeline.
+1. User submits the form on `FormPage`.
+2. The app dispatches `generateHealthReport` thunk.
+3. The thunk calls an LLM service and parses JSON output.
+4. Redux stores result states: `loading`, `reportData`, `error`.
+5. `ReportPage` reads state, sanitizes/transforms data, and renders Summary/Table/Charts/Timeline.
 
-## 6) Clean Code convention
+## 6) Code Conventions
 
-- Tach layer ro rang:
-  - `services`: API call, parse response
-  - `store`: state management (slice, thunk, selector)
-  - `pages`: page-level layout va flow
-  - `components`: UI blocks co the tai su dung
-  - `types`: TypeScript interfaces
-  - `utils`: transform/sanitize data
-- Truoc khi render chart, luon transform data ve dung format (`label/value`, `x/y`).
-- Luon co fallback cho null/undefined de tranh crash UI.
-- Khong hardcode secret trong source code. Dung `.env`.
-- Chay `npm run lint` va `npm run build` truoc khi push.
+- Keep layers separated:
+  - `services`: API calls and response parsing
+  - `store`: Redux slices/thunks/selectors
+  - `pages`: page-level flow and composition
+  - `components`: reusable UI blocks
+  - `types`: TypeScript contracts
+  - `utils`: sanitization and data transform logic
+- Always transform chart data to expected shape before rendering.
+- Always provide null/undefined fallbacks to avoid UI crashes.
+- Never hardcode secrets; use `.env`.
+- Run `npm run lint` and `npm run build` before pushing changes.
 
-## 7) Cau truc thu muc (rut gon)
+## 7) Project Structure (Simplified)
 
 ```text
 src/
@@ -115,9 +112,9 @@ src/
   utils/
 ```
 
-## 8) Push len GitHub
+## 8) Git Push Guide
 
-Neu repo chua co remote:
+If no remote exists yet:
 
 ```bash
 git init
@@ -128,15 +125,15 @@ git remote add origin https://github.com/<your-user>/<your-repo>.git
 git push -u origin main
 ```
 
-Neu da co remote:
+If remote is already configured:
 
 ```bash
 git add .
-git commit -m "docs: update README with run/env/stack/clean-code guide"
+git commit -m "docs: rewrite README in English"
 git push
 ```
 
-## 9) Ghi chu van hanh
+## 9) Operational Notes
 
-- Neu goi truc tiep Gemini API tu frontend, can cau hinh CORS phu hop o phia API va bao mat API key.
-- Neu API fail hoac JSON invalid, app se hien error state va khong crash.
+- If calling Gemini directly from frontend, ensure proper CORS and API key protection.
+- If API fails or returns invalid JSON, the app shows an error state instead of crashing.
