@@ -7,14 +7,16 @@ import {
   InputNumber,
   Select,
   Space,
-  Typography,
 } from "antd";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { clearHealthError, selectHealthError } from "../store/healthSlice";
-import type { HealthFormValues } from "../types/healthReport";
+import Text from "@/components/Text";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { clearHealthError, selectHealthError } from "../../store/healthSlice";
+import type { HealthFormValues } from "../../types/healthReport.type";
+import { classNames } from "../../utils/classNames";
+import styles from "./FormPage.module.scss";
 
 type FormPageProps = {
-  initialValues: HealthFormValues;
+  initialValues: Partial<HealthFormValues>;
   onGenerateReport: (values: HealthFormValues) => Promise<void>;
   loading: boolean;
 };
@@ -30,15 +32,23 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
   };
 
   return (
-    <Card bordered={false} className="content-card">
-      <Space direction="vertical" size={24} style={{ width: "100%" }}>
+    <Card
+      bordered={false}
+      className={classNames(styles.content_card, styles.form_content_card)}
+    >
+      <Space direction="vertical" size={18} style={{ width: "100%" }}>
         <div>
-          <Typography.Title level={3} className="section-title">
-            Patient Input Form
-          </Typography.Title>
-          <Typography.Text type="secondary" className="section-subtitle">
-            Fill in profile data to generate a mock health care report.
-          </Typography.Text>
+          <Text type="h3" className={styles.section_title}>
+            Let&apos;s build your health snapshot
+          </Text>
+          <Text
+            type="p"
+            variant="secondary"
+            className={styles.section_subtitle}
+          >
+            Add a few quick details below and we will generate a clear,
+            personalized progress report for you.
+          </Text>
         </div>
 
         {error ? (
@@ -53,13 +63,14 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
         ) : null}
 
         <Form
+          className={styles.compact_form}
           form={form}
           layout="vertical"
           initialValues={initialValues}
           onFinish={handleFinish}
         >
-          <div className="form_grid_3">
-            <div className="span_6">
+          <div className={styles.form_flow_grid}>
+            <div className={styles.form_flow_cell}>
               <Form.Item
                 label="Full Name"
                 name="fullName"
@@ -68,12 +79,12 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
                 <Input placeholder="Enter patient name" />
               </Form.Item>
             </div>
-            <div className="span_3">
+            <div className={styles.form_flow_cell}>
               <Form.Item label="Age" name="age" rules={[{ required: true }]}>
                 <InputNumber min={1} max={120} style={{ width: "100%" }} />
               </Form.Item>
             </div>
-            <div className="span_3">
+            <div className={styles.form_flow_cell}>
               <Form.Item
                 label="Gender"
                 name="gender"
@@ -88,10 +99,7 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
                 />
               </Form.Item>
             </div>
-          </div>
-
-          <div className="form_grid_2">
-            <div className="span_6">
+            <div className={styles.form_flow_cell}>
               <Form.Item
                 label="Height (cm)"
                 name="heightCm"
@@ -100,7 +108,7 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
                 <InputNumber min={120} max={230} style={{ width: "100%" }} />
               </Form.Item>
             </div>
-            <div className="span_6">
+            <div className={styles.form_flow_cell}>
               <Form.Item
                 label="Current Weight (kg)"
                 name="currentWeightKg"
@@ -109,10 +117,7 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
                 <InputNumber min={30} max={250} style={{ width: "100%" }} />
               </Form.Item>
             </div>
-          </div>
-
-          <div className="form_grid_2">
-            <div className="span_6">
+            <div className={styles.form_flow_cell}>
               <Form.Item
                 label="Goal Weight (kg)"
                 name="goalWeightKg"
@@ -121,7 +126,7 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
                 <InputNumber min={30} max={250} style={{ width: "100%" }} />
               </Form.Item>
             </div>
-            <div className="span_6">
+            <div className={styles.form_flow_cell}>
               <Form.Item
                 label="Exercise Time per Day (minutes)"
                 name="exerciseMinutesPerDay"
@@ -132,16 +137,12 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
             </div>
           </div>
 
-          <Form.Item label="Goal" name="goal" rules={[{ required: true }]}>
-            <Input.TextArea rows={4} placeholder="Describe target outcome" />
-          </Form.Item>
-
           <Button
             type="primary"
             htmlType="submit"
             size="large"
             loading={loading}
-            className="cta-button"
+            className={styles.cta_button}
           >
             Generate Report
           </Button>

@@ -1,6 +1,6 @@
 import { Card, Statistic, Tag } from "antd";
-import type { HealthReport } from "../../types/healthReport";
 import styles from "./Summary.module.scss";
+import type { HealthReport } from "@/types/healthReport.type";
 
 type SummaryProps = {
   report: HealthReport;
@@ -27,6 +27,10 @@ function Summary({ report }: SummaryProps) {
           </div>
           <div className={styles.meta_line}>
             <span className={styles.meta_label}>Goal:</span> {profile.goal}
+          </div>
+          <div className={styles.meta_line}>
+            <span className={styles.meta_label}>Goal Weight:</span>{" "}
+            {profile.goalWeightKg} kg
           </div>
         </div>
 

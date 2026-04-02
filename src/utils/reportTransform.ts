@@ -1,4 +1,3 @@
-import { getMockReport } from "../services/mockReport";
 import type {
   ActivityComposition,
   BodyComposition,
@@ -8,7 +7,7 @@ import type {
   NutritionItem,
   TimelineEvent,
   WeightRecord,
-} from "../types/healthReport";
+} from "../types/healthReport.type";
 
 export interface NutritionChartDatum {
   label: string;
@@ -36,7 +35,33 @@ export interface ExerciseEffortDatum {
   duration: number;
 }
 
-const defaultReport = getMockReport();
+const defaultReport: HealthReport = {
+  profile: {
+    fullName: "",
+    age: 0,
+    gender: "male",
+    heightCm: 0,
+    currentWeightKg: 0,
+    goalWeightKg: 0,
+    goal: "",
+    exerciseMinutesPerDay: 0,
+  },
+  summary: {
+    bmi: 0,
+    bodyFatPercent: 0,
+    restingHeartRate: 0,
+    bloodPressure: "",
+    sleepHours: 0,
+    healthSummaryParagraph: "",
+  },
+  exercises: [],
+  nutrition: [],
+  weightHistory: [],
+  timeline: [],
+  activityComposition: [],
+  bodyComposition: [],
+  exerciseEffort: [],
+};
 
 function safeString(value: unknown, fallback: string): string {
   return typeof value === "string" && value.trim().length > 0

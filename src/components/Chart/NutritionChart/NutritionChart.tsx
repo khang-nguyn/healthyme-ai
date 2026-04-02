@@ -28,10 +28,32 @@ function NutritionChart({ data }: NutritionChartProps) {
         label={{ text: "label", position: "outside" }}
         legend={{ color: { title: false, position: "right" } }}
         tooltip={{
-          formatter: (datum: NutritionChartDatum) => ({
-            name: datum.label,
-            value: `${datum.value} g`,
-          }),
+          title: (datum: NutritionChartDatum) => datum.label,
+          items: [
+            {
+              field: "value",
+              name: "Amount",
+              valueFormatter: (value) => `${value} g`,
+            },
+          ],
+          domStyles: {
+            "g2-tooltip": {
+              backgroundColor: "#ffffff",
+              color: "#1f2937",
+              border: "1px solid #e5e7eb",
+              borderRadius: "8px",
+              boxShadow: "0 8px 24px rgba(15, 23, 42, 0.12)",
+            },
+            "g2-tooltip-title": {
+              color: "#111827",
+            },
+            "g2-tooltip-list-item-name": {
+              color: "#374151",
+            },
+            "g2-tooltip-list-item-value": {
+              color: "#111827",
+            },
+          },
         }}
         height={260}
       />

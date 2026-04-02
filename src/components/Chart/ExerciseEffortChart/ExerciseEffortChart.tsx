@@ -36,7 +36,17 @@ function ExerciseEffortChart({ data }: ExerciseEffortChartProps) {
         yField="value"
         colorField="metric"
         point={{ shapeField: "circle", sizeField: 4 }}
-        axis={{ y: { title: "Value" } }}
+        axis={{
+          x: {
+            labelFormatter: (value: string) => {
+              const date = new Date(value);
+              const month = String(date.getMonth() + 1).padStart(2, "0");
+              const day = String(date.getDate()).padStart(2, "0");
+              return `${month}/${day}`;
+            },
+          },
+          y: { title: false },
+        }}
         tooltip={{
           items: [{ channel: "y", valueFormatter: (value) => `${value}` }],
         }}
