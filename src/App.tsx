@@ -1,29 +1,19 @@
-import { Layout, Segmented, Space, Typography } from "antd";
-import { useMemo, useState } from "react";
+import { Layout, Segmented, Space } from "antd";
+import { useState } from "react";
 import "./App.css";
+import Text from "@/components/Text";
 import FormPage from "./pages/FormPage";
 import ReportPage from "./pages/ReportPage";
-import { getMockReport } from "./services/mockReport";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { generateHealthReport, selectHealthLoading } from "./store/healthSlice";
-import type { HealthFormValues } from "./types/healthReport";
+import type { HealthFormValues } from "./types/healthReport.type";
 
 function App() {
-  const initialReport = useMemo(() => getMockReport(), []);
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectHealthLoading);
   const [activePage, setActivePage] = useState<"form" | "report">("form");
 
-  const initialFormValues: HealthFormValues = {
-    fullName: initialReport.profile.fullName,
-    age: initialReport.profile.age,
-    gender: initialReport.profile.gender,
-    heightCm: initialReport.profile.heightCm,
-    currentWeightKg: initialReport.profile.currentWeightKg,
-    goalWeightKg: initialReport.profile.goalWeightKg,
-    goal: initialReport.profile.goal,
-    exerciseMinutesPerDay: initialReport.profile.exerciseMinutesPerDay,
-  };
+  const initialFormValues: Partial<HealthFormValues> = {};
 
   const handleGenerateReport = async (values: HealthFormValues) => {
     const result = await dispatch(generateHealthReport(values));
@@ -37,14 +27,18 @@ function App() {
     <Layout className="app-layout">
       <Layout.Header className="app-header">
         <div className="app_header_grid">
-          <div>
+          <div className="app-header-main">
             <Space direction="vertical" size={0}>
-              <Typography.Title level={2} className="app-title">
+              <Text type="span" className="app-kicker">
+                Preventive Health Intelligence
+              </Text>
+              <Text type="h2" className="app-title">
                 HealthyMe Care Report
-              </Typography.Title>
-              <Typography.Text className="app-subtitle">
-                Mocked dashboard for patient tracking and progress insights.
-              </Typography.Text>
+              </Text>
+              <Text type="p" className="app-subtitle">
+                Clinical-style dashboard for structured patient assessment,
+                longitudinal progress tracking, and decision-ready insights.
+              </Text>
             </Space>
           </div>
           <div className="switcher-col app_header_switcher">
@@ -53,8 +47,8 @@ function App() {
               value={activePage}
               onChange={(value) => setActivePage(value as "form" | "report")}
               options={[
-                { value: "form", label: "FormPage" },
-                { value: "report", label: "ReportPage" },
+                { value: "form", label: "Patient Form" },
+                { value: "report", label: "Health Report" },
               ]}
             />
           </div>

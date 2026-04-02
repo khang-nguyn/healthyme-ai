@@ -80,6 +80,5 @@ export interface HealthFormValues {
   heightCm: number;
   currentWeightKg: number;
   goalWeightKg: number;
-  goal: string;
   exerciseMinutesPerDay: number;
 }

@@ -48,10 +48,14 @@ function ActivityCompositionChart({ data }: ActivityCompositionChartProps) {
           },
         }}
         tooltip={{
-          formatter: (datum: ActivityCompositionDatum) => ({
-            name: datum.type,
-            value: `${datum.value}%`,
-          }),
+          title: (datum: ActivityCompositionDatum) => datum.type,
+          items: [
+            {
+              field: "value",
+              name: "",
+              valueFormatter: (value) => `${value}%`,
+            },
+          ],
         }}
         height={260}
       />

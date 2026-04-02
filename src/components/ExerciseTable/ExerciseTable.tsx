@@ -1,6 +1,6 @@
 import { Card, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import type { ExerciseRecord } from "../../types/healthReport";
+import type { ExerciseRecord } from "../../types/healthReport.type";
 import styles from "./ExerciseTable.module.scss";
 
 type ExerciseTableProps = {

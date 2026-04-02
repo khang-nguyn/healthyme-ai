@@ -1,5 +1,5 @@
 import { Card, Timeline as AntTimeline } from "antd";
-import type { TimelineEvent } from "../../types/healthReport";
+import type { TimelineEvent } from "../../types/healthReport.type";
 import styles from "./Timeline.module.scss";
 
 type TimelineProps = {
@@ -8,7 +8,11 @@ type TimelineProps = {
 
 function Timeline({ data }: TimelineProps) {
   return (
-    <Card title="Care Timeline" bordered={false} className={styles.card}>
+    <Card
+      title="Care Timeline"
+      bordered={false}
+      className={`${styles.card} h-full`}
+    >
       <AntTimeline
         items={data.map((item) => ({
           children: (
