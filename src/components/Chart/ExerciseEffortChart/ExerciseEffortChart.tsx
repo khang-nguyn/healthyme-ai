@@ -1,6 +1,7 @@
 import { Line } from "@ant-design/charts";
 import { Card, Empty } from "antd";
 import type { ExerciseEffortDatum } from "@/utils/reportTransform";
+import ChartTitle from "../ChartTitle";
 import styles from "./ExerciseEffortChart.module.scss";
 
 type ExerciseEffortChartProps = {
@@ -8,9 +9,16 @@ type ExerciseEffortChartProps = {
 };
 
 function ExerciseEffortChart({ data }: ExerciseEffortChartProps) {
+  const title = (
+    <ChartTitle
+      title="Exercise Effort"
+      description="Shows weekly exercise load by comparing calories burned and workout duration across the week."
+    />
+  );
+
   if (!data.length) {
     return (
-      <Card title="Exercise Effort" bordered={false} className={styles.card}>
+      <Card title={title} bordered={false} className={styles.card}>
         <Empty
           description="No exercise data"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -25,11 +33,7 @@ function ExerciseEffortChart({ data }: ExerciseEffortChartProps) {
   ]);
 
   return (
-    <Card
-      title="Exercise Effort - Calories & Duration"
-      bordered={false}
-      className={styles.card}
-    >
+    <Card title={title} bordered={false} className={styles.card}>
       <Line
         data={chartData}
         xField="date"

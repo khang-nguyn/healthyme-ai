@@ -1,6 +1,7 @@
 import { Pie } from "@ant-design/charts";
 import { Card, Empty } from "antd";
 import type { BodyCompositionDatum } from "@/utils/reportTransform";
+import ChartTitle from "../ChartTitle";
 import styles from "./BodyCompositionChart.module.scss";
 
 type BodyCompositionChartProps = {
@@ -8,9 +9,16 @@ type BodyCompositionChartProps = {
 };
 
 function BodyCompositionChart({ data }: BodyCompositionChartProps) {
+  const title = (
+    <ChartTitle
+      title="Body Composition"
+      description="Shows the relative breakdown of body composition indicators used in the report summary."
+    />
+  );
+
   if (!data.length) {
     return (
-      <Card title="Body Composition" bordered={false} className={styles.card}>
+      <Card title={title} bordered={false} className={styles.card}>
         <Empty
           description="No body composition data"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -20,7 +28,7 @@ function BodyCompositionChart({ data }: BodyCompositionChartProps) {
   }
 
   return (
-    <Card title="Body Composition" bordered={false} className={styles.card}>
+    <Card title={title} bordered={false} className={styles.card}>
       <Pie
         data={data}
         angleField="value"

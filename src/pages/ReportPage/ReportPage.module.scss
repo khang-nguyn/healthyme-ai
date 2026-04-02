@@ -26,6 +26,9 @@
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 16px;
+  max-width: 100%;
+  overflow: hidden;
+  word-break: break-word;
 }
 
 .summary_single {
@@ -41,8 +44,14 @@
   text-align: right;
 }
 
+.report_page {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .report_page :global(.ant-space-item) {
   width: 100%;
+  min-width: 0;
 }
 
 .report_surface {
@@ -72,6 +81,13 @@
   .report_grid_main,
   .report_grid_2 {
     grid-template-columns: 1fr;
+    min-width: 0;
+  }
+
+  .report_grid_main > *,
+  .report_grid_2 > * {
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   .report_toolbar {
