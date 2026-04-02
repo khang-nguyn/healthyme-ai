@@ -1,6 +1,7 @@
 import { Pie } from "@ant-design/charts";
 import { Card, Empty } from "antd";
 import type { NutritionChartDatum } from "@/utils/reportTransform";
+import ChartTitle from "../ChartTitle";
 import styles from "./NutritionChart.module.scss";
 
 type NutritionChartProps = {
@@ -8,9 +9,16 @@ type NutritionChartProps = {
 };
 
 function NutritionChart({ data }: NutritionChartProps) {
+  const title = (
+    <ChartTitle
+      title="Nutrition Balance"
+      description="Shows the nutrition balance used by the report, including the relative amount of each nutrition category."
+    />
+  );
+
   if (!data.length) {
     return (
-      <Card title="Nutrition Balance" bordered={false} className={styles.card}>
+      <Card title={title} bordered={false} className={styles.card}>
         <Empty
           description="No nutrition data"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -20,7 +28,7 @@ function NutritionChart({ data }: NutritionChartProps) {
   }
 
   return (
-    <Card title="Nutrition Balance" bordered={false} className={styles.card}>
+    <Card title={title} bordered={false} className={styles.card}>
       <Pie
         data={data}
         angleField="value"

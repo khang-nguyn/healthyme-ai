@@ -1,6 +1,8 @@
-import { Card, Statistic, Tag } from "antd";
+import { Card, Statistic } from "antd";
 import styles from "./Summary.module.scss";
 import type { HealthReport } from "@/types/healthReport.type";
+import { classNames } from "@/utils/classNames";
+import { getBmiStatus } from "@/utils/bmiCalculator";
 
 type SummaryProps = {
   report: HealthReport;
@@ -8,14 +10,7 @@ type SummaryProps = {
 
 function Summary({ report }: SummaryProps) {
   const { profile, summary } = report;
-  const bmiStatus =
-    summary.bmi < 18.5
-      ? "Underweight"
-      : summary.bmi < 25
-        ? "Healthy"
-        : summary.bmi < 30
-          ? "Overweight"
-          : "Obesity";
+  const bmiStatus = getBmiStatus(summary.bmi);
 
   return (
     <Card bordered={false} className={styles.card}>
@@ -35,15 +30,53 @@ function Summary({ report }: SummaryProps) {
         </div>
 
         <div className={styles.profile_tags}>
-          <Tag className="b">{profile.age} years</Tag>
-          <Tag>{profile.gender}</Tag>
-          <Tag>{profile.heightCm} cm</Tag>
-          <Tag>{profile.currentWeightKg} kg</Tag>
+          <div
+            className={classNames(
+              styles.profile_badge,
+              styles.profile_badge_age,
+            )}
+          >
+            <span className={styles.profile_badge_label}>Age</span>
+            <span className={styles.profile_badge_value}>
+              {profile.age} years
+            </span>
+          </div>
+          <div
+            className={classNames(
+              styles.profile_badge,
+              styles.profile_badge_gender,
+            )}
+          >
+            <span className={styles.profile_badge_label}>Gender</span>
+            <span className={styles.profile_badge_value}>{profile.gender}</span>
+          </div>
+          <div
+            className={classNames(
+              styles.profile_badge,
+              styles.profile_badge_height,
+            )}
+          >
+            <span className={styles.profile_badge_label}>Height</span>
+            <span className={styles.profile_badge_value}>
+              {profile.heightCm} cm
+            </span>
+          </div>
+          <div
+            className={classNames(
+              styles.profile_badge,
+              styles.profile_badge_weight,
+            )}
+          >
+            <span className={styles.profile_badge_label}>Current Weight</span>
+            <span className={styles.profile_badge_value}>
+              {profile.currentWeightKg} kg
+            </span>
+          </div>
         </div>
       </div>
 
       <div className={styles.stats_grid}>
-        <div className={`${styles.stat_item} ${styles.bmi_card}`}>
+        <div className={classNames(styles.stat_item, styles.bmi_card)}>
           <Statistic title="BMI" value={summary.bmi} precision={1} />
           <div className={styles.bmi_status}>{bmiStatus}</div>
         </div>

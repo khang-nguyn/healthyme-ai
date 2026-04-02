@@ -13,6 +13,14 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { clearHealthError, selectHealthError } from "../../store/healthSlice";
 import type { HealthFormValues } from "../../types/healthReport.type";
 import { classNames } from "../../utils/classNames";
+import {
+  BMI_WARNING_OVERWEIGHT,
+  BMI_OBESITY,
+  calculateBmi,
+  getWeightThresholdByBmi,
+  formatKg,
+  getBmiStatus,
+} from "../../utils/bmiCalculator";
 import styles from "./FormPage.module.scss";
 
 type FormPageProps = {
@@ -25,9 +33,79 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
   const [form] = Form.useForm<HealthFormValues>();
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectHealthError);
+  const heightCm = Form.useWatch("heightCm", form);
+  const goalWeightKg = Form.useWatch("goalWeightKg", form);
+
+  const validateGoalWeightByBmi = ({
+    getFieldValue,
+  }: {
+    getFieldValue: (name: keyof HealthFormValues) => unknown;
+  }) => ({
+    validator(_: unknown, value: number | null | undefined) {
+      if (value === undefined || value === null) {
+        return Promise.resolve();
+      }
+
+      const heightValue = Number(getFieldValue("heightCm"));
+      if (!Number.isFinite(heightValue) || heightValue <= 0) {
+        return Promise.resolve();
+      }
+
+      const { underweightKg, obesityKg } = getWeightThresholdByBmi(heightValue);
+
+      if (value < underweightKg) {
+        return Promise.reject(
+          new Error(
+            `Goal Weight below ${formatKg(underweightKg)} kg (BMI < 18.5) is underweight.`,
+          ),
+        );
+      }
+
+      if (value >= obesityKg) {
+        return Promise.reject(
+          new Error(
+            `Goal Weight at or above ${formatKg(obesityKg)} kg (BMI >= 30.0) is obesity.`,
+          ),
+        );
+      }
+
+      return Promise.resolve();
+    },
+  });
+
+  const getGoalWeightWarning = () => {
+    const heightValue = Number(heightCm);
+    const goalWeightValue = Number(goalWeightKg);
+
+    if (
+      !Number.isFinite(heightValue) ||
+      heightValue <= 0 ||
+      !Number.isFinite(goalWeightValue) ||
+      goalWeightValue <= 0
+    ) {
+      return undefined;
+    }
+
+    const bmi = calculateBmi(heightValue, goalWeightValue);
+    if (bmi >= BMI_WARNING_OVERWEIGHT && bmi < BMI_OBESITY) {
+      return `Goal BMI ${bmi.toFixed(1)} is overweight (25.0-29.9).`;
+    }
+
+    return undefined;
+  };
+
+  const goalWeightWarning = getGoalWeightWarning();
 
   const handleFinish = async (values: HealthFormValues) => {
     dispatch(clearHealthError());
+    const currentBmi = calculateBmi(values.heightCm, values.currentWeightKg);
+    const goalBmi = calculateBmi(values.heightCm, values.goalWeightKg);
+    console.log("📊 BMI Calculation:", {
+      currentBmi: currentBmi.toFixed(1),
+      currentStatus: getBmiStatus(currentBmi),
+      goalBmi: goalBmi.toFixed(1),
+      goalStatus: getBmiStatus(goalBmi),
+    });
     await onGenerateReport(values);
   };
 
@@ -67,6 +145,9 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
           form={form}
           layout="vertical"
           initialValues={initialValues}
+          validateMessages={{
+            required: "${label} is required",
+          }}
           onFinish={handleFinish}
         >
           <div className={styles.form_flow_grid}>
@@ -121,7 +202,10 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
               <Form.Item
                 label="Goal Weight (kg)"
                 name="goalWeightKg"
-                rules={[{ required: true }]}
+                dependencies={["heightCm"]}
+                validateStatus={goalWeightWarning ? "warning" : undefined}
+                help={goalWeightWarning}
+                rules={[{ required: true }, validateGoalWeightByBmi]}
               >
                 <InputNumber min={30} max={250} style={{ width: "100%" }} />
               </Form.Item>

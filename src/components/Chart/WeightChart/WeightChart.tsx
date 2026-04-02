@@ -1,6 +1,7 @@
 import { Line } from "@ant-design/charts";
 import { Card, Empty } from "antd";
 import type { WeightChartDatum } from "@/utils/reportTransform";
+import ChartTitle from "../ChartTitle";
 import styles from "./WeightChart.module.scss";
 
 type WeightChartProps = {
@@ -9,9 +10,16 @@ type WeightChartProps = {
 };
 
 function WeightChart({ data, goalWeightKg }: WeightChartProps) {
+  const title = (
+    <ChartTitle
+      title="Weight Progress"
+      description="Shows your recorded weight history against the goal weight so progress is easy to compare."
+    />
+  );
+
   if (!data.length) {
     return (
-      <Card title="Weight Progress" bordered={false} className={styles.card}>
+      <Card title={title} bordered={false} className={styles.card}>
         <Empty
           description="No weight history"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -26,7 +34,7 @@ function WeightChart({ data, goalWeightKg }: WeightChartProps) {
   ]);
 
   return (
-    <Card title="Weight Progress" bordered={false} className={styles.card}>
+    <Card title={title} bordered={false} className={styles.card}>
       <Line
         data={chartData}
         xField="x"

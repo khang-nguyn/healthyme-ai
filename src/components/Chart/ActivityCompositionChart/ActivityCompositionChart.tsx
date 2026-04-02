@@ -1,6 +1,7 @@
 import { Pie } from "@ant-design/charts";
 import { Card, Empty } from "antd";
 import type { ActivityCompositionDatum } from "@/utils/reportTransform";
+import ChartTitle from "../ChartTitle";
 import styles from "./ActivityCompositionChart.module.scss";
 
 type ActivityCompositionChartProps = {
@@ -8,13 +9,16 @@ type ActivityCompositionChartProps = {
 };
 
 function ActivityCompositionChart({ data }: ActivityCompositionChartProps) {
+  const title = (
+    <ChartTitle
+      title="Activity Composition"
+      description="Shows how your activity time is split across different movement categories in this report."
+    />
+  );
+
   if (!data.length) {
     return (
-      <Card
-        title="Activity Composition"
-        bordered={false}
-        className={styles.card}
-      >
+      <Card title={title} bordered={false} className={styles.card}>
         <Empty
           description="No activity data"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -24,7 +28,7 @@ function ActivityCompositionChart({ data }: ActivityCompositionChartProps) {
   }
 
   return (
-    <Card title="Activity Composition" bordered={false} className={styles.card}>
+    <Card title={title} bordered={false} className={styles.card}>
       <Pie
         data={data}
         angleField="value"

@@ -177,7 +177,9 @@ function ReportPage({ onBackToForm }: ReportPageProps) {
       style={{ width: "100%" }}
       className={styles.report_page}
     >
-      <div className={`${styles.report_toolbar} ${styles.report_action_col}`}>
+      <div
+        className={classNames(styles.report_toolbar, styles.report_action_col)}
+      >
         <Space>
           <Button
             type="primary"
