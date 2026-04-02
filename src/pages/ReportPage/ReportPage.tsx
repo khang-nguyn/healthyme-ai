@@ -180,22 +180,17 @@ function ReportPage({ onBackToForm }: ReportPageProps) {
       <div
         className={classNames(styles.report_toolbar, styles.report_action_col)}
       >
-        <Space>
-          <Button
-            type="primary"
-            className={styles.report_primary_btn}
-            icon={<DownloadOutlined />}
-            onClick={handleDownloadPDF}
-          >
-            Download PDF
-          </Button>
-          <Button
-            className={styles.report_secondary_btn}
-            onClick={onBackToForm}
-          >
-            Back to Form
-          </Button>
-        </Space>
+        <Button
+          type="primary"
+          className={styles.report_primary_btn}
+          icon={<DownloadOutlined />}
+          onClick={handleDownloadPDF}
+        >
+          Download PDF
+        </Button>
+        <Button className={styles.report_secondary_btn} onClick={onBackToForm}>
+          Back to Form
+        </Button>
       </div>
 
       <div ref={reportRef} className={styles.report_surface}>

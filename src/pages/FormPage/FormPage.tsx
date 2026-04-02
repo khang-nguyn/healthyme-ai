@@ -1,3 +1,4 @@
+import Text from "@/components/Text";
 import {
   Alert,
   Button,
@@ -8,19 +9,17 @@ import {
   Select,
   Space,
 } from "antd";
-import Text from "@/components/Text";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { clearHealthError, selectHealthError } from "../../store/healthSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import type { HealthFormValues } from "../../types/healthReport.type";
-import { classNames } from "../../utils/classNames";
 import {
-  BMI_WARNING_OVERWEIGHT,
   BMI_OBESITY,
+  BMI_WARNING_OVERWEIGHT,
   calculateBmi,
-  getWeightThresholdByBmi,
   formatKg,
-  getBmiStatus,
+  getWeightThresholdByBmi,
 } from "../../utils/bmiCalculator";
+import { classNames } from "../../utils/classNames";
 import styles from "./FormPage.module.scss";
 
 type FormPageProps = {
@@ -73,6 +72,31 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
     },
   });
 
+  const validateGoalWeightDifferent = ({
+    getFieldValue,
+  }: {
+    getFieldValue: (name: keyof HealthFormValues) => unknown;
+  }) => ({
+    validator(_: unknown, value: number | null | undefined) {
+      if (value === undefined || value === null) {
+        return Promise.resolve();
+      }
+
+      const currentWeightValue = Number(getFieldValue("currentWeightKg"));
+      if (!Number.isFinite(currentWeightValue) || currentWeightValue <= 0) {
+        return Promise.resolve();
+      }
+
+      if (value === currentWeightValue) {
+        return Promise.reject(
+          new Error("Goal Weight must be different from Current Weight."),
+        );
+      }
+
+      return Promise.resolve();
+    },
+  });
+
   const getGoalWeightWarning = () => {
     const heightValue = Number(heightCm);
     const goalWeightValue = Number(goalWeightKg);
@@ -98,14 +122,6 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
 
   const handleFinish = async (values: HealthFormValues) => {
     dispatch(clearHealthError());
-    const currentBmi = calculateBmi(values.heightCm, values.currentWeightKg);
-    const goalBmi = calculateBmi(values.heightCm, values.goalWeightKg);
-    console.log("📊 BMI Calculation:", {
-      currentBmi: currentBmi.toFixed(1),
-      currentStatus: getBmiStatus(currentBmi),
-      goalBmi: goalBmi.toFixed(1),
-      goalStatus: getBmiStatus(goalBmi),
-    });
     await onGenerateReport(values);
   };
 
@@ -202,10 +218,14 @@ function FormPage({ initialValues, onGenerateReport, loading }: FormPageProps) {
               <Form.Item
                 label="Goal Weight (kg)"
                 name="goalWeightKg"
-                dependencies={["heightCm"]}
+                dependencies={["heightCm", "currentWeightKg"]}
                 validateStatus={goalWeightWarning ? "warning" : undefined}
                 help={goalWeightWarning}
-                rules={[{ required: true }, validateGoalWeightByBmi]}
+                rules={[
+                  { required: true },
+                  validateGoalWeightByBmi,
+                  validateGoalWeightDifferent,
+                ]}
               >
                 <InputNumber min={30} max={250} style={{ width: "100%" }} />
               </Form.Item>

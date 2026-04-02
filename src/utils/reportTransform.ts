@@ -217,7 +217,6 @@ export function sanitizeHealthReport(
   }
 
   const source = report as unknown;
-  console.log("🚀 ~ sanitizeHealthReport ~ source:", source);
   if (!isObject(source)) {
     return defaultReport;
   }
